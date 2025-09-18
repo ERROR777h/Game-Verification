@@ -1,12 +1,12 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 const verifyBtn = document.getElementById('verifyBtn');
-const redirectURL = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"; // Change this as needed
+const redirectURL = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"; // Change this if needed
 
 let playerSize = 20;
 let player = {
-  x: Math.min(canvas.width - playerSize, Math.max(0, 400)),
-  y: Math.min(canvas.height - playerSize, Math.max(0, 300)),
+  x: (canvas.width - playerSize) / 2,
+  y: (canvas.height - playerSize) / 2,
   size: playerSize
 };
 
