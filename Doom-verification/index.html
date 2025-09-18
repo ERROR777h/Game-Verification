@@ -1,25 +1,121 @@
-</body><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>DOOM CAPTCHA</title>
+  <title>GAME CAPTCHA</title>
   <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      background-color: #111;
+      color: #fff;
+    }
+    canvas {
+      border: 2px solid #fff;
+      margin-top: 20px;
+    }
+    #verifyBtn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 18px;
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+    #verifyBtn.enabled {
+      cursor: pointer;
+      opacity: 1;
+    }
+  </style>
 </head>
 <body>
-  <h1>Slay 3 Enemies to Verify You're Human</h1>
-  <h2>Use the arrow keys for movement and to colide with the red to kill</h2>
+  <h1>Kill 3 Enemies to Verify You're Human</h1>
+  <h2>Use the arrow keys to move and collide with red squares to kill</h2>
   <canvas id="gameCanvas" width="800" height="600"></canvas>
+  <br />
   <button id="verifyBtn" disabled>Verify</button>
 
-  <script src="game.js"></script>
   <script>
-    // Replace this with your desired redirect URL
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+
+    let player = { x: 400, y: 300, size: 30, color: 'lime' };
+    let enemies = [];
+    let kills = 0;
+    const requiredKills = 3;
+
+    function spawnEnemy() {
+      enemies.push({
+        x: Math.random() * (canvas.width - 30),
+        y: Math.random() * (canvas.height - 30),
+        size: 30,
+        color: 'red'
+      });
+    }
+
+    for (let i = 0; i < requiredKills; i++) spawnEnemy();
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      // Draw player
+      ctx.fillStyle = player.color;
+      ctx.fillRect(player.x, player.y, player.size, player.size);
+      // Draw enemies
+      enemies.forEach(enemy => {
+        ctx.fillStyle = enemy.color;
+        ctx.fillRect(enemy.x, enemy.y, enemy.size, enemy.size);
+      });
+    }
+
+    function checkCollision(a, b) {
+      return (
+        a.x < b.x + b.size &&
+        a.x + a.size > b.x &&
+        a.y < b.y + b.size &&
+        a.y + a.size > b.y
+      );
+    }
+
+    function update() {
+      enemies = enemies.filter(enemy => {
+        if (checkCollision(player, enemy)) {
+          kills++;
+          return false;
+        }
+        return true;
+      });
+
+      if (kills >= requiredKills) {
+        const btn = document.getElementById('verifyBtn');
+        btn.disabled = false;
+        btn.classList.add('enabled');
+        btn.style.cursor = 'pointer';
+      }
+    }
+
+    function gameLoop() {
+      update();
+      draw();
+      requestAnimationFrame(gameLoop);
+    }
+
+    document.addEventListener('keydown', e => {
+      const speed = 10;
+      if (e.key === 'ArrowUp') player.y -= speed;
+      if (e.key === 'ArrowDown') player.y += speed;
+      if (e.key === 'ArrowLeft') player.x -= speed;
+      if (e.key === 'ArrowRight') player.x += speed;
+    });
+
+    gameLoop();
+
     const redirectURL = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
 
     document.getElementById('verifyBtn').addEventListener('click', () => {
-      window.location.href = redirectURL;
+      if (!document.getElementById('verifyBtn').disabled) {
+        window.location.href = redirectURL;
+      }
     });
   </script>
 </body>
-</html>
 </html>
