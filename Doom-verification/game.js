@@ -8,6 +8,13 @@ let enemies = [];
 let kills = 0;
 let verified = false;
 
+let playerSize = 20;
+let player = {
+  x: Math.min(canvas.width - playerSize, Math.max(0, 400)),
+  y: Math.min(canvas.height - playerSize, Math.max(0, 300)),
+  size: playerSize
+};
+
 function spawnEnemy() {
   enemies.push({
     x: Math.random() * (canvas.width - 20),
@@ -77,6 +84,10 @@ document.addEventListener('keydown', e => {
   if (e.key === 'ArrowDown') player.y += speed;
   if (e.key === 'ArrowLeft') player.x -= speed;
   if (e.key === 'ArrowRight') player.x += speed;
+
+  // Clamp to canvas bounds
+  player.x = Math.max(0, Math.min(canvas.width - player.size, player.x));
+  player.y = Math.max(0, Math.min(canvas.height - player.size, player.y));
 });
 
 verifyBtn.addEventListener('click', () => {
@@ -86,3 +97,4 @@ verifyBtn.addEventListener('click', () => {
 });
 
 gameLoop();
+
