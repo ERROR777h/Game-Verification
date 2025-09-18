@@ -2,11 +2,11 @@ window.addEventListener('DOMContentLoaded', () => {
   const canvas = document.getElementById('gameCanvas');
   const ctx = canvas.getContext('2d');
   const verifyBtn = document.getElementById('verifyBtn');
-  const redirectURL = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+  const redirectURL = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"; // Change this if needed
 
   const playerSize = 20;
   let player = {
-    x: canvas.width / 2 - playerSize / 2,
+    x: canvas.width / 2 - playerSize * 1.5, // shifted slightly left of center
     y: canvas.height / 2 - playerSize / 2,
     size: playerSize
   };
