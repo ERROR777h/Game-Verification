@@ -5,8 +5,10 @@ window.addEventListener('DOMContentLoaded', () => {
   const redirectURL = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"; // Change this if needed
 
   const playerSize = 20;
+  const inchOffset = 30; // ~1 inch on most screens
+
   let player = {
-    x: canvas.width / 2 - playerSize * 1.5, // shifted slightly left of center
+    x: canvas.width / 2 - playerSize / 2 - inchOffset,
     y: canvas.height / 2 - playerSize / 2,
     size: playerSize
   };
