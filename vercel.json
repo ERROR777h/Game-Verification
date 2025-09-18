@@ -1,8 +1,8 @@
 {
   "builds": [
-    { "src": "Doom-verfication", "use": "@vercel/static" }
+    { "src": "Doom-verfication/index.html", "use": "@vercel/static" }
   ],
   "routes": [
-    { "src": "/", "dest": "/Doom-verification" }
+    { "src": "/", "dest": "/Doom-verification/index.html" }
   ]
 }
