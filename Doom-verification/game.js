@@ -1,15 +1,17 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 const verifyBtn = document.getElementById('verifyBtn');
+const redirectURL = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
 
 let player = { x: 400, y: 300, size: 20 };
 let enemies = [];
 let kills = 0;
+let verified = false;
 
 function spawnEnemy() {
   enemies.push({
-    x: Math.random() * canvas.width,
-    y: Math.random() * canvas.height,
+    x: Math.random() * (canvas.width - 20),
+    y: Math.random() * (canvas.height - 20),
     size: 20,
     alive: true
   });
@@ -33,14 +35,25 @@ function drawEnemies() {
 
 function checkCollisions() {
   enemies.forEach(e => {
-    if (e.alive &&
-        Math.abs(player.x - e.x) < player.size &&
-        Math.abs(player.y - e.y) < player.size) {
+    if (
+      e.alive &&
+      Math.abs(player.x - e.x) < player.size &&
+      Math.abs(player.y - e.y) < player.size
+    ) {
       e.alive = false;
       kills++;
-      if (kills >= 3) verifyBtn.disabled = false;
+      updateVerifyStatus();
     }
   });
+}
+
+function updateVerifyStatus() {
+  if (kills >= 3 && !verified) {
+    verifyBtn.disabled = false;
+    verifyBtn.classList.add('enabled');
+    verifyBtn.style.cursor = 'pointer';
+    verified = true;
+  }
 }
 
 function drawHUD() {
@@ -67,7 +80,9 @@ document.addEventListener('keydown', e => {
 });
 
 verifyBtn.addEventListener('click', () => {
-  alert('CAPTCHA complete. You are human.');
+  if (!verifyBtn.disabled) {
+    window.location.href = redirectURL;
+  }
 });
 
 gameLoop();
