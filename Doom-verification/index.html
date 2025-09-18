@@ -29,11 +29,13 @@
   </style>
 </head>
 <body>
-  <h1>Kill 3 Enemies to Verify You're Human</h1>
-  <h2>Use the arrow keys to move and collide with red squares to kill</h2>
-  <canvas id="gameCanvas" width="800" height="600"></canvas>
-  <br />
-  <button id="verifyBtn" disabled>Verify</button>
+  <div id="captchaBox">
+    <h1>Kill 3 Enemies to Verify You're Human</h1>
+    <h2>Use the arrow keys to move to collide with the red squares and kill</h2>
+    <canvas id="gameCanvas" width="400" height="300"></canvas>
+    <button id="verifyBtn" disabled>Verify</button>
+  </div>
+</body>
 
   <script>
     const canvas = document.getElementById('gameCanvas');
@@ -119,3 +121,4 @@
   </script>
 </body>
 </html>
+
