@@ -1,107 +1,104 @@
-window.addEventListener('DOMContentLoaded', () => {
-  const canvas = document.getElementById('gameCanvas');
-  const ctx = canvas.getContext('2d');
-  const verifyBtn = document.getElementById('verifyBtn');
-  const redirectURL = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
 
-  // 🔒 Force canvas size in JS
-  canvas.width = 400;
-  canvas.height = 300;
+// 🔒 Lock canvas size in JS to match visual size
+canvas.width = 400;
+canvas.height = 300;
 
-  const playerSize = 20;
-  const inchOffset = 30; // ~1 inch left of center
+const playerSize = 30;
+const inchOffset = 30; // ~1 inch left of center
 
-  // ✅ Use canvas.width/height AFTER setting them
-  let player = {
-    x: canvas.width / 2 - playerSize / 2 - inchOffset,
-    y: canvas.height / 2 - playerSize / 2,
-    size: playerSize
-  };
+let player = {
+  x: canvas.width / 2 - playerSize / 2 - inchOffset,
+  y: canvas.height / 2 - playerSize / 2,
+  size: playerSize,
+  color: 'lime'
+};
 
-  let enemies = [];
-  let kills = 0;
-  let verified = false;
+let enemies = [];
+let kills = 0;
+const requiredKills = 3;
 
-  function spawnEnemy() {
-    enemies.push({
-      x: Math.random() * (canvas.width - 20),
-      y: Math.random() * (canvas.height - 20),
-      size: 20,
-      alive: true
-    });
-  }
+function spawnEnemy() {
+  enemies.push({
+    x: Math.random() * (canvas.width - playerSize),
+    y: Math.random() * (canvas.height - playerSize),
+    size: playerSize,
+    color: 'red'
+  });
+}
 
-  for (let i = 0; i < 3; i++) spawnEnemy();
+for (let i = 0; i < requiredKills; i++) spawnEnemy();
 
-  function drawPlayer() {
-    ctx.fillStyle = 'lime';
-    ctx.fillRect(player.x, player.y, player.size, player.size);
-  }
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  function drawEnemies() {
-    enemies.forEach(e => {
-      if (e.alive) {
-        ctx.fillStyle = 'red';
-        ctx.fillRect(e.x, e.y, e.size, e.size);
-      }
-    });
-  }
+  // Draw player
+  ctx.fillStyle = player.color;
+  ctx.fillRect(player.x, player.y, player.size, player.size);
 
-  function checkCollisions() {
-    enemies.forEach(e => {
-      if (
-        e.alive &&
-        Math.abs(player.x - e.x) < player.size &&
-        Math.abs(player.y - e.y) < player.size
-      ) {
-        e.alive = false;
-        kills++;
-        updateVerifyStatus();
-      }
-    });
-  }
-
-  function updateVerifyStatus() {
-    if (kills >= 3 && !verified) {
-      verifyBtn.disabled = false;
-      verifyBtn.classList.add('enabled');
-      verifyBtn.style.cursor = 'pointer';
-      verified = true;
-    }
-  }
-
-  function drawHUD() {
-    ctx.fillStyle = '#202124';
-    ctx.font = '16px Roboto';
-    ctx.fillText(`Kills: ${kills}/3`, 10, 25);
-  }
-
-  function gameLoop() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawPlayer();
-    drawEnemies();
-    drawHUD();
-    checkCollisions();
-    requestAnimationFrame(gameLoop);
-  }
-
-  document.addEventListener('keydown', e => {
-    const speed = 10;
-    if (e.key === 'ArrowUp') player.y -= speed;
-    if (e.key === 'ArrowDown') player.y += speed;
-    if (e.key === 'ArrowLeft') player.x -= speed;
-    if (e.key === 'ArrowRight') player.x += speed;
-
-    // Clamp to canvas bounds
-    player.x = Math.max(0, Math.min(canvas.width - player.size, player.x));
-    player.y = Math.max(0, Math.min(canvas.height - player.size, player.y));
+  // Draw enemies
+  enemies.forEach(enemy => {
+    ctx.fillStyle = enemy.color;
+    ctx.fillRect(enemy.x, enemy.y, enemy.size, enemy.size);
   });
 
-  verifyBtn.addEventListener('click', () => {
-    if (!verifyBtn.disabled) {
-      window.location.href = redirectURL;
+  // Draw HUD
+  ctx.fillStyle = '#202124';
+  ctx.font = '16px Roboto';
+  ctx.fillText(`Kills: ${kills}/${requiredKills}`, 10, 25);
+}
+
+function checkCollision(a, b) {
+  return (
+    a.x < b.x + b.size &&
+    a.x + a.size > b.x &&
+    a.y < b.y + b.size &&
+    a.y + a.size > b.y
+  );
+}
+
+function update() {
+  enemies = enemies.filter(enemy => {
+    if (checkCollision(player, enemy)) {
+      kills++;
+      return false;
     }
+    return true;
   });
 
-  gameLoop();
+  if (kills >= requiredKills) {
+    const btn = document.getElementById('verifyBtn');
+    btn.disabled = false;
+    btn.classList.add('enabled');
+    btn.style.cursor = 'pointer';
+  }
+}
+
+function gameLoop() {
+  update();
+  draw();
+  requestAnimationFrame(gameLoop);
+}
+
+document.addEventListener('keydown', e => {
+  const speed = 10;
+  if (e.key === 'ArrowUp') player.y -= speed;
+  if (e.key === 'ArrowDown') player.y += speed;
+  if (e.key === 'ArrowLeft') player.x -= speed;
+  if (e.key === 'ArrowRight') player.x += speed;
+
+  // Clamp to canvas bounds
+  player.x = Math.max(0, Math.min(canvas.width - player.size, player.x));
+  player.y = Math.max(0, Math.min(canvas.height - player.size, player.y));
 });
+
+const redirectURL = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+
+document.getElementById('verifyBtn').addEventListener('click', () => {
+  if (!document.getElementById('verifyBtn').disabled) {
+    window.location.href = redirectURL;
+  }
+});
+
+gameLoop();
