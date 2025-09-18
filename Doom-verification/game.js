@@ -4,16 +4,16 @@ window.addEventListener('DOMContentLoaded', () => {
   const verifyBtn = document.getElementById('verifyBtn');
   const redirectURL = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
 
-  // Ensure canvas dimensions are correct
-  const canvasWidth = canvas.width;
-  const canvasHeight = canvas.height;
+  // 🔒 Lock canvas size in JS to match visual size
+  canvas.width = 400;
+  canvas.height = 300;
 
   const playerSize = 20;
-  const inchOffset = 30; // ~1 inch left
+  const inchOffset = 30; // ~1 inch left of center
 
   let player = {
-    x: canvasWidth / 2 - playerSize / 2 - inchOffset,
-    y: canvasHeight / 2 - playerSize / 2,
+    x: canvas.width / 2 - playerSize / 2 - inchOffset,
+    y: canvas.height / 2 - playerSize / 2,
     size: playerSize
   };
 
@@ -23,8 +23,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
   function spawnEnemy() {
     enemies.push({
-      x: Math.random() * (canvasWidth - 20),
-      y: Math.random() * (canvasHeight - 20),
+      x: Math.random() * (canvas.width - 20),
+      y: Math.random() * (canvas.height - 20),
       size: 20,
       alive: true
     });
@@ -76,7 +76,7 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   function gameLoop() {
-    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawPlayer();
     drawEnemies();
     drawHUD();
@@ -92,8 +92,8 @@ window.addEventListener('DOMContentLoaded', () => {
     if (e.key === 'ArrowRight') player.x += speed;
 
     // Clamp to canvas bounds
-    player.x = Math.max(0, Math.min(canvasWidth - player.size, player.x));
-    player.y = Math.max(0, Math.min(canvasHeight - player.size, player.y));
+    player.x = Math.max(0, Math.min(canvas.width - player.size, player.x));
+    player.y = Math.max(0, Math.min(canvas.height - player.size, player.y));
   });
 
   verifyBtn.addEventListener('click', () => {
