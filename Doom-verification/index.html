@@ -1,0 +1,25 @@
+</body><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>DOOM CAPTCHA</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>Slay 3 Enemies to Verify You're Human</h1>
+  <h2>Use the arrow keys for movement and to colide with the red to kill</h2>
+  <canvas id="gameCanvas" width="800" height="600"></canvas>
+  <button id="verifyBtn" disabled>Verify</button>
+
+  <script src="game.js"></script>
+  <script>
+    // Replace this with your desired redirect URL
+    const redirectURL = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+
+    document.getElementById('verifyBtn').addEventListener('click', () => {
+      window.location.href = redirectURL;
+    });
+  </script>
+</body>
+</html>
+</html>
