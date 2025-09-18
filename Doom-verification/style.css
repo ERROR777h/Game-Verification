@@ -45,8 +45,8 @@ canvas {
   display: block;
   margin-left: auto;
   margin-right: auto;
-  width: 400px;   /* Match JS and HTML width */
-  height: 300px;  /* Match JS and HTML height */
+  width: 400px;
+  height: 300px;
 }
 
 /* Verify button */
@@ -70,3 +70,4 @@ button.enabled {
 button.enabled:hover {
   background-color: #3367d6;
 }
+
