@@ -4,13 +4,14 @@ window.addEventListener('DOMContentLoaded', () => {
   const verifyBtn = document.getElementById('verifyBtn');
   const redirectURL = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
 
-  // 🔒 Lock canvas size in JS to match visual size
+  // 🔒 Force canvas size in JS
   canvas.width = 400;
   canvas.height = 300;
 
   const playerSize = 20;
   const inchOffset = 30; // ~1 inch left of center
 
+  // ✅ Use canvas.width/height AFTER setting them
   let player = {
     x: canvas.width / 2 - playerSize / 2 - inchOffset,
     y: canvas.height / 2 - playerSize / 2,
