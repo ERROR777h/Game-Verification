@@ -1,12 +1,7 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 const verifyBtn = document.getElementById('verifyBtn');
-const redirectURL = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
-
-let player = { x: 400, y: 300, size: 20 };
-let enemies = [];
-let kills = 0;
-let verified = false;
+const redirectURL = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"; // Change this as needed
 
 let playerSize = 20;
 let player = {
@@ -14,6 +9,10 @@ let player = {
   y: Math.min(canvas.height - playerSize, Math.max(0, 300)),
   size: playerSize
 };
+
+let enemies = [];
+let kills = 0;
+let verified = false;
 
 function spawnEnemy() {
   enemies.push({
@@ -64,9 +63,9 @@ function updateVerifyStatus() {
 }
 
 function drawHUD() {
-  ctx.fillStyle = 'white';
-  ctx.font = '20px monospace';
-  ctx.fillText(`Kills: ${kills}/3`, 10, 30);
+  ctx.fillStyle = '#202124';
+  ctx.font = '16px Roboto';
+  ctx.fillText(`Kills: ${kills}/3`, 10, 25);
 }
 
 function gameLoop() {
@@ -97,4 +96,3 @@ verifyBtn.addEventListener('click', () => {
 });
 
 gameLoop();
-
